@@ -1,0 +1,18 @@
+.shopListSection {
+  padding: 7px 20px 0 17px;
+  background-color: var(--color-secondary);
+}
+
+.listHeader {
+  margin-bottom: 16px;
+  font-size: 34px;
+  font-weight: 600;
+}
+
+.shopList {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  gap: 10px;
+}
