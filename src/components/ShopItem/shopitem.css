@@ -9,8 +9,6 @@
   border-radius: 20px;
 }
 
-.itemTitle {}
-
 .isChecked {
   text-decoration: line-through;
   background-color: var(--color-grey_lighten);

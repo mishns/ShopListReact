@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent } from "react";
 import styles from "./shopitem.css";
 import classNames from "classnames";
 

@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useBeforeUnload } from "react-router-dom";
 import styles from "./shoplist.css";
 import { ShopItem } from "@components/ShopItem";
 
@@ -19,20 +20,17 @@ export function ShopList() {
       const shopList: IShopItem[] = JSON.parse(shopListStr);
       setShopList(shopList);
     }
-    return () => {
-      saveShopList();
-    };
   }, []);
-
-  useEffect(() => {
-    saveShopList();
-  }, [shopList]);
 
   useEffect(() => {
     if (itemTitleRef.current) {
       itemTitleRef.current.focus();
     }
   }, [shopList.length]);
+
+  useBeforeUnload(() => {
+    saveShopList();
+  });
 
   function saveShopList() {
     localStorage.setItem("shopList", JSON.stringify(shopList));
@@ -87,7 +85,6 @@ export function ShopList() {
     const el = e.target as HTMLInputElement;
     const title: string = el.value ?? "";
     changeItemTitle(itemId, title);
-    saveShopList();
   }
 
   function handleItemBlure(itemId: number, e: ChangeEvent) {
