@@ -2,6 +2,12 @@ import React, { ChangeEvent } from "react";
 import styles from "./shopitem.css";
 import classNames from "classnames";
 
+export interface IShopItem {
+  title: string;
+  isChecked: boolean;
+  id: number;
+}
+
 interface ShopItemProps {
   title: string;
   isChecked: boolean;

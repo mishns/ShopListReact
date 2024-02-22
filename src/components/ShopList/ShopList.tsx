@@ -2,12 +2,7 @@ import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useBeforeUnload } from "react-router-dom";
 import styles from "./shoplist.css";
 import { ShopItem } from "@components/ShopItem";
-
-interface IShopItem {
-  title: string;
-  isChecked: boolean;
-  id: number;
-}
+import { IShopItem } from "@components/ShopItem";
 
 export function ShopList() {
   const [shopList, setShopList] = useState<IShopItem[]>([]);
@@ -37,30 +32,21 @@ export function ShopList() {
   }
 
   function setItemChecked(itemId: number) {
-    const newList: IShopItem[] = shopList.map(item => {
-      if (item.id == itemId) {
-        const updatedItem = {
-          ...item,
-          isChecked: !item.isChecked,
-        };
-        return updatedItem;
-      }
-      return item;
+    const targetItemIndex: number = shopList.findIndex((item: IShopItem) => {
+      return item.id == itemId;
     });
+    const newList: IShopItem[] = [...shopList];
+    const oldValue = shopList[targetItemIndex].isChecked;
+    newList[targetItemIndex].isChecked = !oldValue;
     setShopList(newList);
   }
 
   function changeItemTitle(itemId: number, title: string) {
-    const newList: IShopItem[] = shopList.map(item => {
-      if (item.id == itemId) {
-        const updatedItem = {
-          ...item,
-          title: title,
-        };
-        return updatedItem;
-      }
-      return item;
+    const targetItemIndex: number = shopList.findIndex((item: IShopItem) => {
+      return item.id == itemId;
     });
+    const newList: IShopItem[] = [...shopList];
+    newList[targetItemIndex].title = title;
     setShopList(newList);
   }
 
