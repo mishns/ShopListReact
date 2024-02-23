@@ -1,25 +1,20 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import styles from "./shoplist.css";
 import { ShopItem, IShopItem } from "@components/ShopItem";
 import {
   useRestoreStateFromLocalStorage,
   useSaveStateToLocalStorageBeforeUnload,
+  useLastItemFocus,
 } from "@hooks/index";
 
 const STORAGE_NAME = "shopList";
 
 export function ShopList() {
   const [shopList, setShopList] = useState<IShopItem[]>([]);
-  const itemTitleRef: React.RefObject<HTMLInputElement> = useRef(null);
 
   useRestoreStateFromLocalStorage<IShopItem[]>(setShopList, STORAGE_NAME);
   useSaveStateToLocalStorageBeforeUnload(shopList, STORAGE_NAME);
-
-  useEffect(() => {
-    if (itemTitleRef.current) {
-      itemTitleRef.current.focus();
-    }
-  }, [shopList.length]);
+  const lastItemTitleRef = useLastItemFocus<IShopItem>(shopList);
 
   function updateItem(itemId: number, propName: string, value: unknown) {
     const newList: IShopItem[] = shopList.map(item =>
@@ -78,7 +73,7 @@ export function ShopList() {
               onCheck={handleItemCheck}
               onTitleChange={handleItemTitleChange}
               onTitleBlure={handleItemBlure}
-              titleRef={itemTitleRef}
+              titleRef={lastItemTitleRef}
             />
           </li>
         ))}
