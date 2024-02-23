@@ -21,26 +21,14 @@ export function ShopList() {
     }
   }, [shopList.length]);
 
-  function setItemChecked(itemId: number) {
-    const targetItemIndex: number = shopList.findIndex((item: IShopItem) => {
-      return item.id == itemId;
-    });
-    const newList: IShopItem[] = [...shopList];
-    const oldValue = shopList[targetItemIndex].isChecked;
-    newList[targetItemIndex].isChecked = !oldValue;
+  function updateItem(itemId: number, propName: string, value: unknown) {
+    const newList: IShopItem[] = shopList.map(item =>
+      item.id == itemId ? { ...item, [`${propName}`]: value } : item,
+    );
     setShopList(newList);
   }
 
-  function changeItemTitle(itemId: number, title: string) {
-    const targetItemIndex: number = shopList.findIndex((item: IShopItem) => {
-      return item.id == itemId;
-    });
-    const newList: IShopItem[] = [...shopList];
-    newList[targetItemIndex].title = title;
-    setShopList(newList);
-  }
-
-  function addNewShopItem() {
+  function addItem() {
     const newItem = {
       title: "",
       isChecked: false,
@@ -53,14 +41,16 @@ export function ShopList() {
     setShopList(shopList => shopList.filter(item => item.id != itemId));
   }
 
-  function handleItemCheck(itemId: number) {
-    setItemChecked(itemId);
+  function handleItemCheck(itemId: number, e: ChangeEvent) {
+    const el = e.target as HTMLInputElement;
+    const value: boolean = el.checked;
+    updateItem(itemId, "isChecked", value);
   }
 
   function handleItemTitleChange(itemId: number, e: ChangeEvent) {
     const el = e.target as HTMLInputElement;
-    const title: string = el.value ?? "";
-    changeItemTitle(itemId, title);
+    const title: string = el.value;
+    updateItem(itemId, "title", title);
   }
 
   function handleItemBlure(itemId: number, e: ChangeEvent) {
@@ -72,7 +62,7 @@ export function ShopList() {
   }
 
   function handleNewItemBtn() {
-    addNewShopItem();
+    addItem();
   }
 
   return (

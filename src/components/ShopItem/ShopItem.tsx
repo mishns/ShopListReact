@@ -12,7 +12,7 @@ interface ShopItemProps {
   title: string;
   isChecked: boolean;
   id: number;
-  onCheck: (id: number) => void;
+  onCheck: (id: number, e: ChangeEvent) => void;
   onTitleChange: (id: number, e: ChangeEvent) => void;
   onTitleBlure: (id: number, e: ChangeEvent) => void;
   titleRef: React.RefObject<HTMLInputElement>;
@@ -27,8 +27,8 @@ export function ShopItem({
   onTitleBlure,
   titleRef,
 }: Readonly<ShopItemProps>) {
-  function handleCheck() {
-    onCheck(id);
+  function handleCheck(e: ChangeEvent) {
+    onCheck(id, e);
   }
 
   function handleTitleChange(e: ChangeEvent) {
