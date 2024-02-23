@@ -1,35 +1,25 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import { useBeforeUnload } from "react-router-dom";
 import styles from "./shoplist.css";
-import { ShopItem } from "@components/ShopItem";
-import { IShopItem } from "@components/ShopItem";
+import { ShopItem, IShopItem } from "@components/ShopItem";
+import {
+  useRestoreStateFromLocalStorage,
+  useSaveStateToLocalStorageBeforeUnload,
+} from "@hooks/index";
+
+const STORAGE_NAME = "shopList";
 
 export function ShopList() {
   const [shopList, setShopList] = useState<IShopItem[]>([]);
   const itemTitleRef: React.RefObject<HTMLInputElement> = useRef(null);
 
-  useEffect(() => {
-    const shopListStr: string = localStorage.getItem("shopList") ?? "";
-
-    if (shopListStr) {
-      const shopList: IShopItem[] = JSON.parse(shopListStr);
-      setShopList(shopList);
-    }
-  }, []);
+  useRestoreStateFromLocalStorage<IShopItem[]>(setShopList, STORAGE_NAME);
+  useSaveStateToLocalStorageBeforeUnload(shopList, STORAGE_NAME);
 
   useEffect(() => {
     if (itemTitleRef.current) {
       itemTitleRef.current.focus();
     }
   }, [shopList.length]);
-
-  useBeforeUnload(() => {
-    saveShopList();
-  });
-
-  function saveShopList() {
-    localStorage.setItem("shopList", JSON.stringify(shopList));
-  }
 
   function setItemChecked(itemId: number) {
     const targetItemIndex: number = shopList.findIndex((item: IShopItem) => {
