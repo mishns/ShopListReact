@@ -1,7 +1,9 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent } from "react";
 import styles from "./shoplist.css";
-import { ShopItem, IShopItem } from "@components/ShopItem";
+import { ShopItem, ShopItemData } from "@components/ShopItem";
 import {
+  IStateListItem,
+  useStateItemList,
   useRestoreStateFromLocalStorage,
   useSaveStateToLocalStorageBeforeUnload,
   useLastItemFocus,
@@ -10,31 +12,11 @@ import {
 const STORAGE_NAME = "shopList";
 
 export function ShopList() {
-  const [shopList, setShopList] = useState<IShopItem[]>([]);
-
-  useRestoreStateFromLocalStorage<IShopItem[]>(setShopList, STORAGE_NAME);
-  useSaveStateToLocalStorageBeforeUnload(shopList, STORAGE_NAME);
-  const lastItemTitleRef = useLastItemFocus<IShopItem>(shopList);
-
-  function updateItem(itemId: number, propName: string, value: unknown) {
-    const newList: IShopItem[] = shopList.map(item =>
-      item.id == itemId ? { ...item, [`${propName}`]: value } : item,
-    );
-    setShopList(newList);
-  }
-
-  function addItem() {
-    const newItem = {
-      title: "",
-      isChecked: false,
-      id: Math.floor(Math.random() * 1000),
-    };
-    setShopList([...shopList, newItem]);
-  }
-
-  function deleteItem(itemId: number) {
-    setShopList(shopList => shopList.filter(item => item.id != itemId));
-  }
+  const { stateList, setStateList, addItem, updateItem, deleteItem } =
+    useStateItemList<ShopItemData>();
+  useRestoreStateFromLocalStorage<ShopItemData[]>(setStateList, STORAGE_NAME);
+  useSaveStateToLocalStorageBeforeUnload(stateList, STORAGE_NAME);
+  const lastItemTitleRef = useLastItemFocus<IStateListItem>(stateList);
 
   function handleItemCheck(itemId: number, e: ChangeEvent) {
     const el = e.target as HTMLInputElement;
@@ -57,19 +39,19 @@ export function ShopList() {
   }
 
   function handleNewItemBtn() {
-    addItem();
+    addItem(new ShopItemData(""));
   }
 
   return (
     <div className={styles.shopListSection}>
       <h1 className={styles.listHeader}>Список покупок</h1>
       <ul className={styles.shopList}>
-        {shopList.map(item => (
+        {stateList.map((item: ShopItemData) => (
           <li key={item.id} className={styles.shopItem}>
             <ShopItem
+              id={item.id}
               title={item.title}
               isChecked={item.isChecked}
-              id={item.id}
               onCheck={handleItemCheck}
               onTitleChange={handleItemTitleChange}
               onTitleBlure={handleItemBlure}

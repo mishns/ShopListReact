@@ -2,10 +2,16 @@ import React, { ChangeEvent } from "react";
 import styles from "./shopitem.css";
 import classNames from "classnames";
 
-export interface IShopItem {
+export class ShopItemData {
+  id: number;
   title: string;
   isChecked: boolean;
-  id: number;
+
+  constructor(title: string, isChecked: boolean = false) {
+    (this.id = Math.floor(Math.random() * 100000)),
+      (this.title = title),
+      (this.isChecked = isChecked);
+  }
 }
 
 interface ShopItemProps {
