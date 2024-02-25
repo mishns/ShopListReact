@@ -2,21 +2,20 @@ import React, { ChangeEvent } from "react";
 import styles from "./shoplist.css";
 import { ShopItem, ShopItemData } from "@components/ShopItem";
 import {
-  IStateListItem,
-  useStateItemList,
-  useRestoreStateFromLocalStorage,
-  useSaveStateToLocalStorageBeforeUnload,
+  useStateItemListWithLocalStorage,
   useLastItemFocus,
-} from "@hooks/index";
+} from "@root/src/hooks";
 
 const STORAGE_NAME = "shopList";
 
 export function ShopList() {
-  const { stateList, setStateList, addItem, updateItem, deleteItem } =
-    useStateItemList<ShopItemData>();
-  useRestoreStateFromLocalStorage<ShopItemData[]>(setStateList, STORAGE_NAME);
-  useSaveStateToLocalStorageBeforeUnload(stateList, STORAGE_NAME);
-  const lastItemTitleRef = useLastItemFocus<IStateListItem>(stateList);
+  const {
+    stateList: shopList,
+    addItem,
+    updateItem,
+    deleteItem,
+  } = useStateItemListWithLocalStorage<ShopItemData>(STORAGE_NAME);
+  const lastItemTitleRef = useLastItemFocus<ShopItemData>(shopList);
 
   function handleItemCheck(itemId: number, e: ChangeEvent) {
     const el = e.target as HTMLInputElement;
@@ -46,7 +45,7 @@ export function ShopList() {
     <div className={styles.shopListSection}>
       <h1 className={styles.listHeader}>Список покупок</h1>
       <ul className={styles.shopList}>
-        {stateList.map((item: ShopItemData) => (
+        {shopList.map((item: ShopItemData) => (
           <li key={item.id} className={styles.shopItem}>
             <ShopItem
               id={item.id}
