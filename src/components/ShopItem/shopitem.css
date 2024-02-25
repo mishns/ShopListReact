@@ -1,15 +1,9 @@
-.shopItem {
-  display: flex;
-  align-items: center;
-  min-height: 57px;
-  padding: 16px;
-  padding-left: 20px;
-  gap: 5px;
-  background-color: var(--color-grey_light);
-  border-radius: 20px;
-}
-
 .isChecked {
   text-decoration: line-through;
   background-color: var(--color-grey_lighten);
+}
+
+.itemTitle {
+  border: none;
+  background-color: transparent;
 }

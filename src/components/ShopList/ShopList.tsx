@@ -3,7 +3,7 @@ import styles from "./shoplist.css";
 import { ShopItem, ShopItemData } from "@components/ShopItem";
 import {
   useStateItemListWithLocalStorage,
-  useLastItemFocus,
+  useLastItemInputFocus,
 } from "@root/src/hooks";
 
 const STORAGE_NAME = "shopList";
@@ -15,7 +15,7 @@ export function ShopList() {
     updateItem,
     deleteItem,
   } = useStateItemListWithLocalStorage<ShopItemData>(STORAGE_NAME);
-  const lastItemTitleRef = useLastItemFocus<ShopItemData>(shopList);
+  const lastItemTitleRef = useLastItemInputFocus<ShopItemData>(shopList);
 
   function handleItemCheck(itemId: number, e: ChangeEvent) {
     const el = e.target as HTMLInputElement;
@@ -59,7 +59,9 @@ export function ShopList() {
           </li>
         ))}
       </ul>
-      <button onClick={handleNewItemBtn}>Новый элемент</button>
+      <button className={styles.newItemBtn} onClick={handleNewItemBtn}>
+        Новый элемент
+      </button>
     </div>
   );
 }

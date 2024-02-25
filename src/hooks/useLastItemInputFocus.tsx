@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export function useLastItemFocus<ItemType>(list: ItemType[]) {
+export function useLastItemInputFocus<ItemType>(list: ItemType[]) {
   const lastItemTitleRef: React.RefObject<HTMLInputElement> = useRef(null);
   useEffect(() => {
     if (lastItemTitleRef.current) {

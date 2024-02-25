@@ -10,9 +10,28 @@
 }
 
 .shopList {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   display: flex;
   flex-direction: column;
   background-color: #fff;
   gap: 10px;
+}
+
+.shopItem {
+  display: flex;
+  align-items: center;
+  min-height: 57px;
+  padding: 16px 20px;
+  gap: 10px;
+  background-color: var(--color-grey_light);
+  border-radius: 20px;
+}
+
+.newItemBtn {
+  width: 100%;
+  min-height: 34px;
+  border-radius: 20px;
+  border: none;
+  color: var(--color-secondary);
+  background-color: blue;
 }

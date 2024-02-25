@@ -46,14 +46,13 @@ export function ShopItem({
   }
 
   const titleClasses = classNames({
-    [styles.ItemTitle]: true,
+    [styles.itemTitle]: true,
     [styles.isChecked]: isChecked,
   });
 
   return (
     <>
       <input
-        // className={styles.ItemCheckbox}
         defaultChecked={isChecked}
         onChange={handleCheck}
         type="checkbox"
