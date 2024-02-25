@@ -1,20 +1,20 @@
 import React, { ChangeEvent } from "react";
 import styles from "./shoplist.css";
 import { ShopItem, ShopItemData } from "@components/ShopItem";
-import {
-  useStateItemListWithLocalStorage,
-  useLastItemInputFocus,
-} from "@root/src/hooks";
+import { useLastItemInputFocus, useStateItemList } from "@root/src/hooks";
+import { useStateLocalStorage } from "@root/src/hooks/useStateLocalStorage";
 
 const STORAGE_NAME = "shopList";
 
 export function ShopList() {
   const {
     stateList: shopList,
+    setStateList: setShopList,
     addItem,
     updateItem,
     deleteItem,
-  } = useStateItemListWithLocalStorage<ShopItemData>(STORAGE_NAME);
+  } = useStateItemList<ShopItemData>();
+  useStateLocalStorage(shopList, setShopList, STORAGE_NAME);
   const lastItemTitleRef = useLastItemInputFocus<ShopItemData>(shopList);
 
   function handleItemCheck(itemId: number, e: ChangeEvent) {
@@ -31,7 +31,7 @@ export function ShopList() {
 
   function handleItemBlure(itemId: number, e: ChangeEvent) {
     const el = e.target as HTMLInputElement;
-    const title: string = el.value ?? "";
+    const title: string = el.value || "";
     if (!title) {
       deleteItem(itemId);
     }
